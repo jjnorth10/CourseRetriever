@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:id="@+id/RelativeLayout1"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+android:background="@drawable/gradient_background">
+
+<RelativeLayout
+    android:id="@+id/RelativeLayout2"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_centerInParent="true"
+    android:layout_margin="20dp"
+    android:padding="10dp"
+    android:background="@drawable/rounded_background">
+
+    <EditText
+        android:id="@+id/tokenET"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView1"
+        android:layout_marginTop="15dp"
+        android:layout_centerHorizontal="true"
+
+        android:textSize="18sp"
+        android:ems="10" >
+
+        <requestFocus />
+    </EditText>
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:text="Please Enter Your OurVLE Token"
+        android:layout_centerHorizontal="true"
+        android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/enter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tokenET"
+        android:background="@drawable/rounded_button"
+        android:textColor="@color/white"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="15dp"
+        android:text="Enter" />
+
+    <Button
+        android:id="@+id/help"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tokenET"
+        android:background="@drawable/rounded_button2"
+        android:textColor="@color/darkBlue"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="15dp"
+        android:text="Help" />
+
+
+
+</RelativeLayout>
+
+</RelativeLayout>

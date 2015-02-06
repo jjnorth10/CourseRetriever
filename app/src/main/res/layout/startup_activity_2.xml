@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/RelativeLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/gradient_background">
+
+    <RelativeLayout
+        android:id="@+id/RelativeLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerInParent="true"
+        android:layout_margin="20dp"
+        android:padding="10dp"
+        android:background="@drawable/rounded_background">
+
+
+
+        <TextView
+            android:id="@+id/usernameTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:text="Please Enter Your ID Number"
+            android:layout_centerHorizontal="true"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/usernameET"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/usernameTV"
+            android:layout_marginTop="15dp"
+            android:layout_centerHorizontal="true"
+
+            android:textSize="18sp"
+            android:ems="10" >
+
+            <requestFocus />
+        </EditText>
+
+
+        <TextView
+            android:id="@+id/passwordTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:layout_below="@+id/usernameET"
+            android:text="Please Enter Your Password"
+            android:layout_centerHorizontal="true"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/passwordET"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/passwordTV"
+            android:layout_marginTop="15dp"
+            android:inputType="textPassword"
+            android:layout_centerHorizontal="true"
+
+            android:textSize="18sp"
+            android:ems="10" >
+
+            <requestFocus />
+        </EditText>
+
+        <Button
+            android:id="@+id/enter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/passwordET"
+            android:background="@drawable/rounded_button"
+            android:textColor="@color/white"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="15dp"
+            android:text="Enter" />
+
+
+
+
+
+    </RelativeLayout>
+
+</RelativeLayout>
