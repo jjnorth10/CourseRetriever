@@ -17,6 +17,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -33,6 +34,7 @@ public class StartupActivity extends Activity implements FunctionNames,Communica
 	AlertDialog.Builder builder;
 	Communication comm;
 	Context context;
+    public static final String TAG  = StartupActivity.class.getSimpleName();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -122,8 +124,15 @@ public class StartupActivity extends Activity implements FunctionNames,Communica
             String token = null;
             try {
                 token = object.getString("token");
+                Log.d(TAG, "Token: " + token);
             } catch (JSONException e) {
                 e.printStackTrace();
+            }
+            if(token!=null){
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+                final SharedPreferences.Editor editor = prefs.edit();
+                editor.putString("token",token);
+                editor.commit();
             }
             HashMap<String,Object> map = new HashMap<String,Object>();
 			map.put("wstoken", token);

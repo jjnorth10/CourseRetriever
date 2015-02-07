@@ -54,6 +54,7 @@ public class Communication {
 	JSONObject object;
 	int statusCode;
 	String errorString = "Error cannot connect";
+    private static final long MAX_SIZE = 5242880L;
 	
 	ProgressDialog progressDialog;
 	ProgressDialog progressDialog2;
@@ -179,141 +180,9 @@ public class Communication {
 	}
 	
 	
-	public void downloadFile (final CommunicationResponse communicationResponse,String fileUrl,String fileName){
-		//StringBuilder builder = new StringBuilder();
-		//builder.append(apiUrl);
-		//builder.append(path);
-		//builder.append(queryParams);
-		URL = fileUrl;
-		//final String filename = fileName; 
-		Log.d(TAG, "Url: "+URL);
-		
-		AsyncTask<String,String,String> async = new AsyncTask<String,String,String>(){
-			
-			@Override
-			protected void onPreExecute() {
-				// TODO Auto-generated method stub
-				progressDialog = new ProgressDialog(context);
-				progressDialog.setMessage("Loading...");
-				progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-				progressDialog.setCancelable(true);
-				progressDialog.show();
-			}
 
+    public void retrieveFile (final CommunicationResponse communicationResponse,String fileUrl,String fileName, final int type){
 
-			@Override
-			protected String doInBackground(String... arg0) {
-				// TODO Auto-generated method stub
-				int byteCount;
-				try{
-					StrictMode.ThreadPolicy policy = new StrictMode.
-					ThreadPolicy.Builder().permitAll().build();
-					StrictMode.setThreadPolicy(policy); 
-					
-					
-					
-					 URL url = new URL(arg0[0]);
-		             URLConnection connection = url.openConnection();
-		             connection.connect();
-					
-					
-					long lengthOfFile = connection.getContentLength();
-					
-					
-					String fileName = URLUtil.guessFileName(URL, null, MimeTypeMap.getFileExtensionFromUrl(URL));
-					File folder = new File(Environment.getExternalStorageDirectory().toString(),".CourseRetriever");
-					File file = new File(folder,fileName);
-					if (!folder.isDirectory()){
-		                folder.mkdir();
-					}
-					try {
-			            file.createNewFile();
-			        } catch (IOException e1) {
-			            e1.printStackTrace();
-			        }
-					InputStream is = new BufferedInputStream(url.openStream());
-					
-					OutputStream os = new FileOutputStream(file);
-					
-					byte[] buffer = new byte[1024];
-					
-					long total = 0;
-					
-					while((byteCount = is.read(buffer))!= -1){
-						total += byteCount;
-						progressDialog.setProgress((int) ((total * 100) / lengthOfFile));
-						os.write(buffer, 0, byteCount);
-					}
-					os.flush();
-					os.close();
-					is.close();
-					
-					return fileName;
-					
-				
-				}catch(Exception e){
-					Log.d(TAG, "ERROR",e);
-					e.printStackTrace();
-					return  errorString;
-					
-				}
-			}
-			;
-			@Override
-			protected void onPostExecute(String result) {
-				// TODO Auto-generated method stub
-				progressDialog.dismiss();
-				if(result== errorString){
-					Toast.makeText(context, result, Toast.LENGTH_LONG).show();
-					Log.d(TAG, result);
-				}else{
-					//Toast.makeText(context, "File Downloaded", Toast.LENGTH_LONG).show();
-					showPdf(URL);
-				}
-				
-			}
-			
-			
-		};
-		async.execute(URL);
-		
-	}
-	public void showPdf(String url)
-    {
-		String fileName = URLUtil.guessFileName(url, null, MimeTypeMap.getFileExtensionFromUrl(url));
-		File file = new File(Environment.getExternalStorageDirectory().toString()+"/.CourseRetriever/"+fileName);
-        PackageManager packageManager = context.getPackageManager();
-        String type = MimeTypeMap.getFileExtensionFromUrl(url);
-        Log.d(TAG, "type: "+type);
-        Intent testIntent = new Intent(Intent.ACTION_VIEW);
-        testIntent.setType("application/"+type);
-        List list = packageManager.queryIntentActivities(testIntent, PackageManager.MATCH_DEFAULT_ONLY);
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_VIEW);
-        Uri uri = Uri.fromFile(file);
-        if(type.equals("pdf")){
-        	 intent.setDataAndType(uri, "application/pdf");
-		}
-        else if(type.equals("doc")){
-			 intent.setDataAndType(uri,"application/msword");
-		}
-        else if(type.equals("ppt")){
-			intent.setDataAndType(uri,"application/vnd.ms-powerpoint");
-		}
-        else if(type.equals("xls")){
-			intent.setDataAndType(uri,"application/vnd.ms-excel");
-		}else{
-			intent.setDataAndType(uri,"text/plain");
-		}
-       
-        context.startActivity(intent);
-    }
-
-    public void downloadFile2 (final CommunicationResponse communicationResponse,String fileUrl,String fileName){
-        //StringBuilder builder = new StringBuilder();
-        //builder.append(apiUrl);
-        //builder.append(path);
-        //builder.append(queryParams);
         URL = fileUrl;
         //final String filename = fileName;
         Log.d(TAG, "Url: "+URL);
@@ -351,16 +220,23 @@ public class Communication {
 
 
                     String fileName = URLUtil.guessFileName(URL, null, MimeTypeMap.getFileExtensionFromUrl(URL));
-                    File folder = new File(Environment.getExternalStorageDirectory().toString(),".CourseRetriever");
-                    File file = new File(folder,fileName);
-                    if (!folder.isDirectory()){
-                        folder.mkdir();
+                    File cacheDir = context.getExternalCacheDir();
+                    //File folder = new File(context.getCacheDir(),"CourseRetriever");
+                    File file = new File(context.getExternalCacheDir(),fileName);
+                    long size = CacheManager.getDirSize(cacheDir);
+                    Log.d(TAG,"Cache sixe: "+size);
+                    long newSize = lengthOfFile + size;
+                    if (newSize > MAX_SIZE) {
+                        CacheManager.cleanDir(cacheDir, newSize - MAX_SIZE);
                     }
-                    try {
+                    //if (!file.isDirectory()){
+                    //    file.mkdir();
+                    //}
+                   /* try {
                         file.createNewFile();
                     } catch (IOException e1) {
                         e1.printStackTrace();
-                    }
+                    }*/
                     InputStream is = new BufferedInputStream(url.openStream());
 
                     OutputStream os = new FileOutputStream(file);
@@ -397,8 +273,16 @@ public class Communication {
                     Toast.makeText(context, result, Toast.LENGTH_LONG).show();
                     Log.d(TAG, result);
                 }else{
+                    switch (type){
+                        case 1:
+                            showFile(URL);
+                        break;
+                        case 2:
+                            shareFile(URL);
+                        break;
+                    }
                     //Toast.makeText(context, "File Downloaded", Toast.LENGTH_LONG).show();
-                    shareFile(URL);
+                    //showFile(URL);
                 }
 
             }
@@ -409,10 +293,43 @@ public class Communication {
 
     }
 
+    public void showFile(String url)
+    {
+        String fileName = URLUtil.guessFileName(url, null, MimeTypeMap.getFileExtensionFromUrl(url));
+        File file = new File(context.getExternalCacheDir(),fileName);
+        PackageManager packageManager = context.getPackageManager();
+        String type = MimeTypeMap.getFileExtensionFromUrl(url);
+        Log.d(TAG, "type: "+type);
+        Intent testIntent = new Intent(Intent.ACTION_VIEW);
+        testIntent.setType("application/"+type);
+        List list = packageManager.queryIntentActivities(testIntent, PackageManager.MATCH_DEFAULT_ONLY);
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_VIEW);
+        Uri uri = Uri.fromFile(file);
+        if(type.equals("pdf")){
+            intent.setDataAndType(uri, "application/pdf");
+        }
+        else if(type.equals("doc")){
+            intent.setDataAndType(uri,"application/msword");
+        }
+        else if(type.equals("ppt")){
+            intent.setDataAndType(uri,"application/vnd.ms-powerpoint");
+        }
+        else if(type.equals("xls")){
+            intent.setDataAndType(uri,"application/vnd.ms-excel");
+        }else{
+            intent.setDataAndType(uri,"text/plain");
+        }
+
+        context.startActivity(intent);
+    }
+
+
+
     public void shareFile(String url)
     {
         String fileName = URLUtil.guessFileName(url, null, MimeTypeMap.getFileExtensionFromUrl(url));
-        File file = new File(Environment.getExternalStorageDirectory().toString()+"/.CourseRetriever/"+fileName);
+        File file = new File(context.getExternalCacheDir(),fileName);
         PackageManager packageManager = context.getPackageManager();
         String type = MimeTypeMap.getFileExtensionFromUrl(url);
         Log.d(TAG, "type: "+type);

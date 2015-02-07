@@ -192,19 +192,34 @@ public class CourseModuleActivity extends ListActivity implements CommunicationR
         List<Content> contents = module.getContent();
         final String fileurl=contents.get(0).getFileurl();
         final String filename=contents.get(0).getFilename();
+        if(isFileInCache(filename)){
+            comm.shareFile(fileurl);
+        }else {
+            StringBuilder sbuilder = new StringBuilder();
+            String queryParams = "&token=" + token;
 
-        StringBuilder sbuilder = new StringBuilder();
+            sbuilder.append(fileurl);
+            sbuilder.append(queryParams);
+            String url = sbuilder.toString();
+            Log.d(TAG, "File url: " + url);
+            comm.retrieveFile(act, url, "",2);
 
-        //HashMap<String,Object> map = new HashMap<String,Object>();
-        //map.put("token", token);
-        String queryParams = "&token="+token;
-
-        sbuilder.append(fileurl);
-        sbuilder.append(queryParams);
-        String url = sbuilder.toString();
-        Log.d(TAG, "File url: "+url);
-        comm.downloadFile2(act, url, "");
+        }
     }
+
+    public boolean isFileInCache(String fileName){
+        File file = new File(context.getExternalCacheDir(),fileName);
+        if (file.exists()){
+            Log.d(TAG,"file in cache");
+            return true;
+
+        }else{
+            Log.d(TAG,"file not in cache");
+            return false;
+        }
+    }
+
+
 
 
 	@Override
@@ -223,29 +238,24 @@ public class CourseModuleActivity extends ListActivity implements CommunicationR
 		
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
+                if(isFileInCache(filename)){
+                    comm.showFile(fileurl);
+                }else {
+                    StringBuilder sbuilder = new StringBuilder();
 
-				StringBuilder sbuilder = new StringBuilder();
+                    //HashMap<String,Object> map = new HashMap<String,Object>();
+                    //map.put("token", token);
+                    String queryParams = "&token=" + token;
+
+                    sbuilder.append(fileurl);
+                    sbuilder.append(queryParams);
+                    String url = sbuilder.toString();
+                    Log.d(TAG, "File url: " + url);
+                    comm.retrieveFile(act, url, "",1);
+
+                }
 				
-				//HashMap<String,Object> map = new HashMap<String,Object>();
-				//map.put("token", token);
-				String queryParams = "&token="+token;
-				
-				sbuilder.append(fileurl);
-				sbuilder.append(queryParams);
-				String url = sbuilder.toString();
-				Log.d(TAG, "File url: "+url);
-				comm.downloadFile(act, url, "");
-				
-				/*DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
-				request.setTitle(filename);
-				request.setDescription("File Downloading...");
-				request.allowScanningByMediaScanner();
-				request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-				String fileName = URLUtil.guessFileName(url, null, MimeTypeMap.getFileExtensionFromUrl(url));
-				request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName);
-				
-				DownloadManager manager = (DownloadManager) act.getSystemService(Context.DOWNLOAD_SERVICE);
-				manager.enqueue(request);*/
+
 			
 			}
 		});
