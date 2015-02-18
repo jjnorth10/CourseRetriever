@@ -1,4 +1,4 @@
-package com.example.communication;
+package com.jordannorthover.communication;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

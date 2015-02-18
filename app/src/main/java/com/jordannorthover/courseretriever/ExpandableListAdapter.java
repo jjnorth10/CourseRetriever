@@ -1,12 +1,9 @@
-package com.example.courseretriever;
-
-import java.util.List;
+package com.jordannorthover.courseretriever;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 

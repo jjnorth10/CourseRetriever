@@ -1,4 +1,4 @@
-package com.example.communication;
+package com.jordannorthover.communication;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -9,10 +9,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,11 +25,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import com.example.courseretriever.R;
 
-
-
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -40,7 +34,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Environment;
 import android.os.StrictMode;
 import android.util.Log;
 import android.webkit.MimeTypeMap;
@@ -147,6 +140,7 @@ public class Communication {
 				if(result== errorString){
 					Toast.makeText(context, result, Toast.LENGTH_LONG);
 					Log.d(TAG, result);
+                    communicationResponse.onError(communicationId,errorString);
 				}else{
 				try {
 					//array=new JSONArray(result);

@@ -1,4 +1,4 @@
-package com.example.communication;
+package com.jordannorthover.communication;
 
 public class HttpRequest {
 	

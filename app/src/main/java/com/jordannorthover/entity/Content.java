@@ -1,4 +1,4 @@
-package com.example.entity;
+package com.jordannorthover.entity;
 
 public class Content {
 	private String type;   //a file or a folder or external link

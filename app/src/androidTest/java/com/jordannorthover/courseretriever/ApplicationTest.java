@@ -1,4 +1,4 @@
-package com.example.courseretriever;
+package com.jordannorthover.courseretriever;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

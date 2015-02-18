@@ -1,39 +1,30 @@
-package com.example.courseretriever;
+package com.jordannorthover.courseretriever;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.NodeList;
 
-import com.example.communication.APIEndPoints;
-import com.example.communication.Communication;
-import com.example.communication.CommunicationResponse;
+import com.jordannorthover.communication.APIEndPoints;
+import com.jordannorthover.communication.Communication;
+import com.jordannorthover.communication.CommunicationResponse;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
-import android.support.v7.app.ActionBarActivity;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 public class MainActivity extends ListActivity implements CommunicationResponse {
@@ -59,6 +50,10 @@ public class MainActivity extends ListActivity implements CommunicationResponse 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        AdView mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
         
         listView = getListView();
         comm=new Communication(this);
@@ -113,6 +108,7 @@ public class MainActivity extends ListActivity implements CommunicationResponse 
 		Course course = courses.get(position);
 		Intent i = new Intent(this,CourseSectionActivity.class);
 		i.putExtra("courseid", course.getId());
+        i.putExtra("userid",userid);
 		startActivity(i);
 	}
 
@@ -137,6 +133,7 @@ public class MainActivity extends ListActivity implements CommunicationResponse 
                 String idnumber = object.getString("idnumber");
                 int visible = object.getInt("visible");
                 Course course = new Course(id, shortname, fullname, enrolledusercount, idnumber, visible);
+                //handler.insertCourse(id,shortname, fullname);
                 courses.add(course);
             } catch (JSONException e) {
                 // TODO Auto-generated catch block

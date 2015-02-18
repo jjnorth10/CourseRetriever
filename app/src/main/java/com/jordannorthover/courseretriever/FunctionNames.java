@@ -1,4 +1,4 @@
-package com.example.courseretriever;
+package com.jordannorthover.courseretriever;
 
 public interface FunctionNames {
 	//public static final int userid= 5161;

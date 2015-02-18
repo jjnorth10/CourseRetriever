@@ -1,4 +1,4 @@
-package com.example.communication;
+package com.jordannorthover.communication;
 
 import android.content.Context;
 

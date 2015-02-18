@@ -1,4 +1,4 @@
-package com.example.courseretriever;
+package com.jordannorthover.courseretriever;
 
 import java.util.HashMap;
 
@@ -6,9 +6,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.example.communication.APIEndPoints;
-import com.example.communication.Communication;
-import com.example.communication.CommunicationResponse;
+import com.jordannorthover.communication.APIEndPoints;
+import com.jordannorthover.communication.Communication;
+import com.jordannorthover.communication.CommunicationResponse;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -18,7 +18,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -69,36 +68,17 @@ public class StartupActivity extends Activity implements FunctionNames,Communica
 				editor.commit();
 				
 				HashMap<String,Object> map = new HashMap<String,Object>();
-				/*map.put("wstoken", token);
-				map.put("moodlewsrestformat", "json");
-				map.put("wsfunction", core_webservice_get_site_info);
-				String queryParams = Communication.getQueryString(map);*/
+
                 map.put("username", user);
                 map.put("password", pass);
                 map.put("service", "moodle_mobile_app");
                 String queryParams = Communication.getQueryString(map);
 				comm.send(1,act, APIEndPoints.apiUrl, APIEndPoints.token, queryParams);
-				//Intent i = new Intent(act,MainActivity.class);
-				//startActivity(i);
+
 				
 			}};
 			
-			/*OnClickListener helpListener = new OnClickListener(){
 
-				@Override
-				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					builder=new AlertDialog.Builder(act);
-					builder.setTitle("Instructions");
-					LayoutInflater inflater = act.getLayoutInflater();//(LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-					View layout = inflater.inflate(R.layout.help_dialog, null);
-					builder.setView(layout);
-					dialog = builder.create();
-					dialog.show();
-					
-				}
-				
-			};*/
 			
 			enter.setOnClickListener(enterListener);
 
@@ -156,6 +136,8 @@ public class StartupActivity extends Activity implements FunctionNames,Communica
 
     @Override
     public void onError(int communicationId, String message) {
+
+
 
     }
 }

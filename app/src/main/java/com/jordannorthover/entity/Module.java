@@ -1,4 +1,4 @@
-package com.example.entity;
+package com.jordannorthover.entity;
 
 import java.util.List;
 

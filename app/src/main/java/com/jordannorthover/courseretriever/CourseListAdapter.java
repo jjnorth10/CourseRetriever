@@ -1,6 +1,5 @@
-package com.example.courseretriever;
+package com.jordannorthover.courseretriever;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;

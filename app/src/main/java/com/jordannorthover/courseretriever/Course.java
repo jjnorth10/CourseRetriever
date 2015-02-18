@@ -1,4 +1,4 @@
-package com.example.courseretriever;
+package com.jordannorthover.courseretriever;
 
 public class Course {
 	private int id; //id of course
